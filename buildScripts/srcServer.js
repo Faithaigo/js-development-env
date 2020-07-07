@@ -1,12 +1,20 @@
-var express = require('express');
-var path = require('path');
-var open = require('open');
+import express  from 'express';
+import path  from 'path';
+import open  from 'open';
+import webpack from 'webpack';
+import config from '../webpack.config.dev'
 
 
-var port = 3000;
+const port = 3000;
 
 //create an instance of express
-var app = express()
+const app = express()
+const compiler = webpack(config)
+
+app.use(require('webpack-dev-middleware')(compiler,{
+  noInfo:true,
+  publicPath:config.output.publicPath
+}))
 
 //tell express which routes it should handle
 app.get('/', function(req,res){ //handles any references to /
